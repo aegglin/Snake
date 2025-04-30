@@ -7,6 +7,7 @@ public class Window extends JFrame implements Runnable{
     public static int currentState;
     public static Scene currentScene;
     public static KeyHandler keyHandler = new KeyHandler();
+    public static MouseHandler mouseHandler = new MouseHandler();
 
     public Window(int width, int height, String title) {
         setSize(width, height);
@@ -19,13 +20,15 @@ public class Window extends JFrame implements Runnable{
 
         Window.changeState(0);
         addKeyListener(Window.keyHandler);
+        addMouseListener(Window.mouseHandler);
+        addMouseMotionListener(Window.mouseHandler);
     }
 
     public static void changeState(int newState) {
         Window.currentState = newState;
         switch (Window.currentState) {
             case 0:
-                Window.currentScene = new MenuScene(Window.keyHandler);
+                Window.currentScene = new MenuScene(Window.keyHandler, Window.mouseHandler);
                 break;
             case 1:
                 Window.currentScene = new GameScene();
@@ -35,6 +38,10 @@ public class Window extends JFrame implements Runnable{
                 Window.currentScene = null;
                 break;
         }
+    }
+
+    public static void close() {
+
     }
 
     public void update(double dt) {
