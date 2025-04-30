@@ -44,7 +44,7 @@ public class MenuScene extends Scene {
             mouseHandler.getY() >= playRect.y && mouseHandler.getY() <= playRect.y + playRect.height) {
             playCurrentImage = playPressed;
             if (mouseHandler.isPressed()) {
-                Window.changeState(1);
+                Window.getWindow().changeState(1);
             }
         } else {
             playCurrentImage = play;
@@ -54,7 +54,7 @@ public class MenuScene extends Scene {
                 mouseHandler.getY() >= exitRect.y && mouseHandler.getY() <= exitRect.y + exitRect.height) {
             exitCurrentImage = exitPressed;
             if (mouseHandler.isPressed()) {
-
+                Window.getWindow().close();
             }
         } else {
             exitCurrentImage = exit;

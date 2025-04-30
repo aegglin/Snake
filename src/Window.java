@@ -3,11 +3,13 @@ import java.awt.*;
 
 public class Window extends JFrame implements Runnable{
 
+    public static Window window = null;
+
     public boolean isRunning;
-    public static int currentState;
-    public static Scene currentScene;
-    public static KeyHandler keyHandler = new KeyHandler();
-    public static MouseHandler mouseHandler = new MouseHandler();
+    public int currentState;
+    public Scene currentScene;
+    public KeyHandler keyHandler = new KeyHandler();
+    public MouseHandler mouseHandler = new MouseHandler();
 
     public Window(int width, int height, String title) {
         setSize(width, height);
@@ -18,29 +20,37 @@ public class Window extends JFrame implements Runnable{
 
         isRunning = true;
 
-        Window.changeState(0);
-        addKeyListener(Window.keyHandler);
-        addMouseListener(Window.mouseHandler);
-        addMouseMotionListener(Window.mouseHandler);
+        changeState(0);
+        addKeyListener(keyHandler);
+        addMouseListener(mouseHandler);
+        addMouseMotionListener(mouseHandler);
     }
 
-    public static void changeState(int newState) {
-        Window.currentState = newState;
-        switch (Window.currentState) {
+    public static Window getWindow() {
+        if (Window.window == null) {
+            Window.window = new Window(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, Constants.SCREEN_TITLE);
+        }
+        return Window.window;
+    }
+
+    public void changeState(int newState) {
+        currentState = newState;
+        switch (currentState) {
             case 0:
-                Window.currentScene = new MenuScene(Window.keyHandler, Window.mouseHandler);
+                currentScene = new MenuScene(keyHandler, mouseHandler);
                 break;
             case 1:
-                Window.currentScene = new GameScene();
+                currentScene = new GameScene();
                 break;
             default:
                 System.out.println("Unknown scene.");
-                Window.currentScene = null;
+                currentScene = null;
                 break;
         }
     }
 
-    public static void close() {
+    public void close() {
+        isRunning = false;
 
     }
 
@@ -71,5 +81,6 @@ public class Window extends JFrame implements Runnable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+        this.dispose();
     }
 }
