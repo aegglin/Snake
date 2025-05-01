@@ -7,6 +7,8 @@ public class Snake {
     public GameRectangle[] body = new GameRectangle[100];
     public double bodyWidth, bodyHeight;
 
+    public GameRectangle background;
+
     public int size;
     public int tail = 0;
     public int head;
@@ -16,10 +18,11 @@ public class Snake {
     public double origWaitBetweenUpdates = 0.3f;
     public double waitTimeLeft = origWaitBetweenUpdates;
 
-    public Snake(int size, double startX, double startY, double bodyWidth, double bodyHeight) {
+    public Snake(int size, double startX, double startY, double bodyWidth, double bodyHeight, GameRectangle background) {
         this.size = size;
         this.bodyWidth = bodyWidth;
         this.bodyHeight = bodyHeight;
+        this.background = background;
 
         for (int i = 0; i <= size; i++) {
             GameRectangle bodyPiece = new GameRectangle(startX + i * bodyWidth, startY, bodyWidth, bodyHeight);
@@ -45,7 +48,7 @@ public class Snake {
             waitTimeLeft -= dt;
         } else {
 
-            if (isIntersectingWithSelf()) {
+            if (isIntersectingWithSelf() || isIntersectingWithBoundaries(body[head])) {
                 Window.getWindow().changeState(0);
             }
 
@@ -77,8 +80,33 @@ public class Snake {
         }
     }
 
+    public boolean isIntersectingWithBoundaries(GameRectangle head) {
+        return head.x < background.x ||
+                head.x + head.width > background.x + background.width ||
+                head.y < background.y ||
+                head.y + head.height > background.y + background.height;
+    }
+
     public void grow() {
-        System.out.println("Growing");
+        double newX = 0;
+        double newY = 0;
+
+        if (direction == Direction.RIGHT) {
+            newX = body[tail].x - bodyWidth;
+            newY = body[tail].y;
+        } else if (direction == Direction.LEFT) {
+            newX = body[tail].x + bodyWidth;
+            newY = body[tail].y;
+        } else if (direction == Direction.UP) {
+            newX = body[tail].x;
+            newY = body[tail].y + bodyHeight;
+        } else if (direction == Direction.DOWN) {
+            newX = body[tail].x;
+            newY = body[tail].y - bodyHeight;
+        }
+        GameRectangle newBodyPiece = new GameRectangle(newX, newY, bodyWidth, bodyHeight);
+        tail = (tail - 1) % body.length;
+        body[tail] = newBodyPiece;
     }
 
     public boolean isIntersectingWithSelf() {

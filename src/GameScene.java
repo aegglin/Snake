@@ -13,7 +13,7 @@ public class GameScene extends Scene {
     public GameScene(KeyHandler keyHandler) {
         background = new GameRectangle(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
         foreground = new GameRectangle(24, 48, Constants.TILE_WIDTH * 31, Constants.TILE_WIDTH * 22);
-        snake = new Snake(10, 48, 48+24, 24, 24);
+        snake = new Snake(10, 48, 48+24, 24, 24, foreground);
 
         this.keyHandler = keyHandler;
         food = new Food(foreground, snake, 12, 12, Color.GREEN);
