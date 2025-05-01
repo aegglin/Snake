@@ -40,7 +40,7 @@ public class Window extends JFrame implements Runnable{
                 currentScene = new MenuScene(keyHandler, mouseHandler);
                 break;
             case 1:
-                currentScene = new GameScene();
+                currentScene = new GameScene(keyHandler);
                 break;
             default:
                 System.out.println("Unknown scene.");
