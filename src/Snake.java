@@ -74,15 +74,21 @@ public class Snake {
 
             body[head].x = newX;
             body[head].y = newY;
-
-
         }
+    }
+
+    public void grow() {
+        System.out.println("Growing");
     }
 
     public boolean isIntersectingWithSelf() {
         GameRectangle headRect = body[head];
-        for (int i = tail; i != head - 1; i = (i + 1) % body.length) {
-            if (isIntersecting(headRect, body[i])) {
+        return intersectingWithRect(headRect);
+    }
+
+    public boolean intersectingWithRect(GameRectangle rect) {
+        for (int i = tail; i != head; i = (i + 1) % body.length) {
+            if (isIntersecting(rect, body[i])) {
                 return true;
             }
         }
