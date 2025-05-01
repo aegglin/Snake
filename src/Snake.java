@@ -44,6 +44,11 @@ public class Snake {
         if (waitTimeLeft > 0) {
             waitTimeLeft -= dt;
         } else {
+
+            if (isIntersectingWithSelf()) {
+                Window.getWindow().changeState(0);
+            }
+
             waitTimeLeft = origWaitBetweenUpdates;
             double newX = 0;
             double newY = 0;
@@ -69,7 +74,24 @@ public class Snake {
 
             body[head].x = newX;
             body[head].y = newY;
+
+
         }
+    }
+
+    public boolean isIntersectingWithSelf() {
+        GameRectangle headRect = body[head];
+        for (int i = tail; i != head - 1; i = (i + 1) % body.length) {
+            if (isIntersecting(headRect, body[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isIntersecting(GameRectangle rect1, GameRectangle rect2) {
+        return rect1.x >= rect2.x && rect1.x + rect1.width <= rect2.x + rect2.width
+                && rect1.y >= rect2.y && rect1.y + rect1.height <= rect2.y + rect2.height;
     }
 
     public void draw(Graphics2D g2d) {
